@@ -1,0 +1,42 @@
+[
+  {
+    "id": "253",
+    "name": "Abarth Grande Punto S2000",
+    "path": "g.punto_s2000",
+    "filename": "g.punto_s2000",
+    "hash": "7ad65666fb09c35e3d6e7f2e361c7c9e",
+    "fallback": "5"
+  },
+  {
+    "id": "75",
+    "name": "Alfa Romeo 33",
+    "path": "Alfa33",
+    "filename": "alfa33",
+    "hash": "6429bad8c33469f85847a2ae1d856cce",
+    "fallback": "0"
+  },
+  {
+    "id": "96",
+    "name": "Alfa Romeo GTA 1967",
+    "path": "67_Alfa_Romeo_GTA",
+    "filename": "67_Alfa_Romeo_GTA",
+    "hash": "3f4abb598ef0654bed536313388c7b57",
+    "fallback": "2"
+  },
+  {
+    "id": "247",
+    "name": "Alpine A110 Rally RGT",
+    "path": "Alpine_A110_2020",
+    "filename": "Alpine_A110_2020",
+    "hash": "432d3e75b4b0fcb7837752bf2c43b75b",
+    "fallback": "5"
+  },
+  {
+    "id": "235",
+    "name": "Aston Martin Vantage RGT",
+    "path": "AstonMartin_Vantage_RGT",
+    "filename": "AstonMartin_Vantage_RGT",
+    "hash": "1333fd64063146e4de1c2f6a437c12b5",
+    "fallback": "5"
+  }
+]

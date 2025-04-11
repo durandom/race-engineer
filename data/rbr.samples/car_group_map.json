@@ -1,0 +1,37 @@
+[
+  {
+    "group_id": "111",
+    "car_id": "91",
+    "id": "91",
+    "name": "Abarth Grande Punto S2000",
+    "ngp": "6"
+  },
+  {
+    "group_id": "113",
+    "car_id": "91",
+    "id": "91",
+    "name": "Abarth Grande Punto S2000",
+    "ngp": "6"
+  },
+  {
+    "group_id": "7",
+    "car_id": "91",
+    "id": "91",
+    "name": "Abarth Grande Punto S2000",
+    "ngp": "6"
+  },
+  {
+    "group_id": "38",
+    "car_id": "83",
+    "id": "83",
+    "name": "Alpine A110 Rally RGT",
+    "ngp": "6"
+  },
+  {
+    "group_id": "102",
+    "car_id": "83",
+    "id": "83",
+    "name": "Alpine A110 Rally RGT",
+    "ngp": "6"
+  }
+]
