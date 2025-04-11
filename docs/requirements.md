@@ -19,6 +19,7 @@ A desktop application to view Richard Burns Rally (RBR) game state data, specifi
 - The application layout should follow a simple left-side navigation and main content area:
   - **Left-side navigation**:
     - **Cars and Tracks** section: lists all cars and tracks, each via its own Svelte component.
+      - For a detailed description of the RBR domain model, see [RBR Domain Model Documentation](./data-model-rbr.md).
     - **Settings** section: allows user to configure the RBR directory.
   - **Main content area**: displays details for the selected car or track.
 - No local database; all data is read live from files.
