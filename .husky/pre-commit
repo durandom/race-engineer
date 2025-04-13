@@ -1,1 +1,1 @@
-cd race-engineer and pnpm run precommit
+cd app and pnpm run precommit
