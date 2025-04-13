@@ -1,0 +1,24 @@
+{
+  "name": "race-engineer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install": "cd app && pnpm install",
+    "precommit": "pnpm run gitleaks && cd app && pnpm run format && pnpm run lint || exit 1",
+    "gitleaks": "gitleaks detect --verbose --redact .",
+    "prepare": "husky"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pnpm run precommit"
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.8.0",
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}
