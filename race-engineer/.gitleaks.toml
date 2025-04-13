@@ -28,6 +28,7 @@ regexes = [
     '''^/(?:bin|etc|home|opt|tmp|usr|var)/[\w ./-]+$''',
 ]
 paths = [
+    "Cargo.lock",
     '''gitleaks\.toml''',
     '''(?i)\.(?:bmp|gif|jpe?g|png|svg|tiff?)$''',
     '''(?i)\.(?:eot|[ot]tf|woff2?)$''',
