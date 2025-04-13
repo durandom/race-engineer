@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "precommit": "pnpm run gitleaks && cd race-engineer && pnpm run format && pnpm run lint || exit 1",
+    "install": "cd app && pnpm install",
+    "precommit": "pnpm run gitleaks && cd app && pnpm run format && pnpm run lint || exit 1",
     "gitleaks": "gitleaks detect --verbose --redact .",
     "prepare": "husky"
   },
