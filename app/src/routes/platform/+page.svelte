@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { open } from '@tauri-apps/plugin-dialog';
 	import { load } from '@tauri-apps/plugin-store';
+	import { goto } from '$app/navigation'; // Import SvelteKit's `goto` function
 	import Logo from '$components/logo.svelte';
 
 	let directory = '';
@@ -14,6 +15,7 @@
 		if (saved) {
 			directory = saved;
 			console.log('Restored directory:', directory);
+			goto('/dashboard'); // Automatically redirect if directory already exists
 		}
 	})();
 
@@ -27,7 +29,7 @@
 		if (selected && typeof selected === 'string') {
 			directory = selected;
 			await store.set('rbr_directory', directory);
-			await store.save(); // Persist to disk
+			await store.save();
 			console.log(`Directory saved: ${directory}`);
 		} else {
 			alert('No directory selected.');
@@ -35,8 +37,10 @@
 	};
 
 	const handleProceed = () => {
-		console.log('Proceeding with:', directory);
-		// Your logic here
+		if (directory) {
+			console.log('Proceeding with:', directory);
+			goto('/dashboard'); // Redirect when user clicks Proceed
+		}
 	};
 </script>
 
