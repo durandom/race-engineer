@@ -3,17 +3,17 @@
 	import { invoke } from '@tauri-apps/api/core';
 
 	interface StageData {
-		stage_id: number;
+		stage_id: string; // Changed to string
 		name: string;
-		deftime: number;
-		length: number;
-		surface_id: number;
+		deftime: string; // Changed to string
+		length: string; // Changed to string
+		surface_id: string; // Changed to string
 		short_country: string;
 		author: string;
-		tarmac: number;
-		gravel: number;
-		snow: number;
-		new_update: number;
+		tarmac: string; // Changed to string
+		gravel: string; // Changed to string
+		snow: string; // Changed to string
+		new_update: string; // Changed to string
 		author_web: string;
 		author_note: string;
 		fattrib: string;
@@ -22,13 +22,11 @@
 	let stages: StageData[] = [];
 	let error = '';
 
-	const display = (value: string | number | undefined) =>
-		value === '' || value == null ? 'N/A' : value;
+	const display = (value: string | undefined) => (value === '' || value == null ? 'N/A' : value);
 
 	onMount(async () => {
 		try {
 			const result = await invoke<string>('get_stages_data');
-			console.log('Raw stage data:', result);
 			stages = JSON.parse(result);
 		} catch (err) {
 			error = `Failed to load stage data: ${(err as Error).message}`;

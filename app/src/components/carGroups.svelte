@@ -3,12 +3,12 @@
 	import { invoke } from '@tauri-apps/api/core';
 
 	type CarGroup = {
-		id: number;
+		id: string;
 		name: string;
-		user_id: number;
-		main: number;
-		test: number;
-		ngp: number;
+		user_id: string;
+		main: string;
+		test: string;
+		ngp: string;
 	};
 
 	let carGroups: CarGroup[] = [];
@@ -17,9 +17,13 @@
 	onMount(async () => {
 		try {
 			const raw = await invoke<string>('get_car_groups');
-			carGroups = JSON.parse(raw) as CarGroup[];
-		} catch (err) {
-			error = `Error fetching car groups: ${(err as Error).message}`;
+			carGroups = JSON.parse(raw);
+		} catch (err: unknown) {
+			if (err instanceof Error) {
+				error = `Error fetching car groups: ${err.message}`;
+			} else {
+				error = `Unknown error: ${JSON.stringify(err)}`;
+			}
 			console.error(error);
 		}
 	});
@@ -33,7 +37,7 @@
 	{:else if carGroups.length > 0}
 		<div class="h-[500px] overflow-auto">
 			<table class="min-w-full table-auto text-left">
-				<thead class="bg-indigo-600 text-white">
+				<thead class="sticky top-0 z-10 bg-indigo-600 text-white">
 					<tr>
 						<th class="sticky top-0 bg-indigo-600 px-4 py-2 text-sm font-medium">ID</th>
 						<th class="sticky top-0 bg-indigo-600 px-4 py-2 text-sm font-medium">Name</th>

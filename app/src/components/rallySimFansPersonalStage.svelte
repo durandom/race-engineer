@@ -56,7 +56,7 @@
 					</tr>
 				</thead>
 				<tbody class="divide-y divide-gray-200">
-					{#each entries as entry (entry.stage_id)}
+					{#each entries as stage (stage.stage_id)}
 						<tr class="hover:bg-indigo-50">
 							<td class="px-4 py-2 text-sm">{display(stage.stage_id)}</td>
 							<td class="px-4 py-2 text-sm">{display(stage.name)}</td>

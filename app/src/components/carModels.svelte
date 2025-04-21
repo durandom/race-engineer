@@ -33,7 +33,7 @@
 	{:else if carModels.length > 0}
 		<div class="h-[500px] overflow-auto">
 			<table class="min-w-full table-auto text-left">
-				<thead class="bg-indigo-600 text-white">
+				<thead class="sticky top-0 z-10 bg-indigo-600 text-white">
 					<tr>
 						<th class="sticky top-0 bg-indigo-600 px-4 py-2 text-sm font-medium">ID</th>
 						<th class="sticky top-0 bg-indigo-600 px-4 py-2 text-sm font-medium">Name</th>

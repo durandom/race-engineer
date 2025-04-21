@@ -3,11 +3,11 @@
 	import { onMount } from 'svelte';
 
 	type CarGroupMap = {
-		group_id: number;
-		car_id: number;
-		id: number;
+		group_id: string;
+		car_id: string;
+		id: string;
 		name: string;
-		ngp: number;
+		ngp: string;
 	};
 
 	let carGroupMap: CarGroupMap[] = [];
@@ -28,7 +28,7 @@
 	{#if carGroupMap.length > 0}
 		<div class="h-[500px] overflow-auto">
 			<table class="min-w-full table-auto text-left">
-				<thead class="bg-indigo-600 text-white">
+				<thead class="sticky top-0 z-10 bg-indigo-600 text-white">
 					<tr>
 						<th class="sticky top-0 z-10 bg-indigo-600 px-4 py-2 text-sm font-medium">Group ID</th>
 						<th class="sticky top-0 z-10 bg-indigo-600 px-4 py-2 text-sm font-medium">Car ID</th>
@@ -38,7 +38,7 @@
 					</tr>
 				</thead>
 				<tbody class="divide-y divide-gray-200">
-					{#each carGroupMap as { group_id, car_id, id, name, ngp } (id)}
+					{#each carGroupMap as { group_id, car_id, id, name, ngp }, i (i)}
 						<tr class="hover:bg-indigo-50">
 							<td class="px-4 py-3 text-sm text-gray-700">{group_id}</td>
 							<td class="px-4 py-3 text-sm text-gray-600">{car_id}</td>

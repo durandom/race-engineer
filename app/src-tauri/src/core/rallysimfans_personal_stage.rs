@@ -45,8 +45,6 @@ pub fn get_stage(app_handle: AppHandle) -> Result<String, String> {
 
     let stage_ini_path = Path::new(dir_path).join(stage_ini_file_name);
 
-    println!("Stage INI path: {:?}", stage_ini_path);
-
     let conf = Ini::load_from_file(&stage_ini_path)
         .map_err(|e| format!("Failed to load stage.ini file: {}", e))?;
 

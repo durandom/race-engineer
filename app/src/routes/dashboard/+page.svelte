@@ -25,9 +25,12 @@
 		{ name: 'settings', icon: 'mdi:cog' }
 	];
 
-	let selected = 'home';
+	let selected = 'groups';
 	let directory = '';
 	let store: Awaited<ReturnType<typeof load>>;
+
+	// A key to trigger component remount when refresh happens
+	let componentKey = 0;
 
 	onMount(async () => {
 		store = await load('settings.json');
@@ -48,7 +51,6 @@
 			directory = selected;
 			await store.set('rbr_directory', directory);
 			await store.save();
-			console.log(`Directory updated: ${directory}`);
 		} else {
 			alert('No directory selected.');
 		}
@@ -58,6 +60,18 @@
 		const parts = path.split('/');
 		if (parts.length <= 3) return path;
 		return `…/${parts.slice(-3).join('/')}`;
+	};
+
+	// Refresh function to update data and remount the component
+	const refreshData = async () => {
+		// Logic for refreshing data goes here (you can reload data or re-fetch from the store, etc.)
+		// For example, if you're reloading the directory or settings:
+		const saved = await store.get<string>('rbr_directory');
+		if (saved) {
+			directory = saved;
+		}
+		// Increment componentKey to trigger remount
+		componentKey += 1;
 	};
 </script>
 
@@ -75,6 +89,7 @@
 					<p class="break-words text-gray-700">{shortenPath(directory)}</p>
 				</div>
 				<button
+					on:click={refreshData}
 					class="center-flex gap-1 rounded-md bg-black px-4 py-2 text-white shadow hover:bg-slate-900 focus:ring-2 focus:ring-gray-500 focus:outline-none"
 				>
 					<Icon icon="mdi:refresh" class="size-5" />
@@ -120,7 +135,10 @@
 			{/each}
 		</aside>
 
-		<section class="h-[calc(100vh-122px)] flex-1 overflow-hidden rounded-lg bg-white p-6">
+		<section
+			class="h-[calc(100vh-122px)] flex-1 overflow-hidden rounded-lg bg-white p-6"
+			key={componentKey}
+		>
 			{#if selected === 'settings'}
 				<Settings />
 			{/if}

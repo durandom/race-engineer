@@ -1,18 +1,16 @@
-use ini::Ini;
 use serde::{Deserialize, Serialize};
-use std::env;
-use std::fs;
 use std::path::Path;
+use std::{env, fs};
 use tauri::{AppHandle, Manager};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CarModel {
-    id: u32,
+    id: String,
     name: String,
     path: String,
     filename: String,
     hash: String,
-    fallback: u32,
+    fallback: String,
 }
 
 #[tauri::command]
@@ -41,49 +39,11 @@ pub fn get_car_models(app_handle: AppHandle) -> Result<String, String> {
 
     let car_models_path = Path::new(dir_path).join(car_models_file_name);
 
-    let conf =
-        Ini::load_from_file(&car_models_path).map_err(|e| format!("Failed to load file: {}", e))?;
+    let car_models_json = fs::read_to_string(&car_models_path)
+        .map_err(|e| format!("Failed to read car models JSON file: {}", e))?;
 
-    let mut car_models: Vec<CarModel> = Vec::new();
-
-    for (_section_name, properties) in &conf {
-        let id = match properties.get("id").and_then(|v| v.parse::<u32>().ok()) {
-            Some(val) => val,
-            None => continue,
-        };
-        let name = match properties.get("name") {
-            Some(val) => val.to_string(),
-            None => continue,
-        };
-        let path = match properties.get("path") {
-            Some(val) => val.to_string(),
-            None => continue,
-        };
-        let filename = match properties.get("filename") {
-            Some(val) => val.to_string(),
-            None => continue,
-        };
-        let hash = match properties.get("hash") {
-            Some(val) => val.to_string(),
-            None => continue,
-        };
-        let fallback = match properties
-            .get("fallback")
-            .and_then(|v| v.parse::<u32>().ok())
-        {
-            Some(val) => val,
-            None => continue,
-        };
-
-        car_models.push(CarModel {
-            id,
-            name,
-            path,
-            filename,
-            hash,
-            fallback,
-        });
-    }
+    let car_models: Vec<CarModel> = serde_json::from_str(&car_models_json)
+        .map_err(|e| format!("Failed to parse car models JSON: {}", e))?;
 
     serde_json::to_string(&car_models).map_err(|_| "Failed to serialize car models".to_string())
 }

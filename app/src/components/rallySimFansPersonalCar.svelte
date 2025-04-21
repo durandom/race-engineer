@@ -30,7 +30,6 @@
 	onMount(async () => {
 		try {
 			const result = await invoke<string>('get_car_options');
-			console.log('Raw car options data:', result);
 			carOptions = JSON.parse(result);
 		} catch (err) {
 			// Use a new variable for the error message
@@ -39,7 +38,7 @@
 	});
 </script>
 
-<div class="max-w-full rounded-lg bg-white shadow-lg">
+<div class="max-w-full rounded-lg bg-white">
 	<h2 class="mb-3 text-2xl font-semibold text-gray-800">Car Options / Specs</h2>
 
 	{#if errorMessage}

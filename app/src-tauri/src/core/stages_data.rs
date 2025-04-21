@@ -1,104 +1,65 @@
-use ini::Ini;
 use serde::{Deserialize, Serialize};
 use serde_json;
-use std::env;
-use std::fs;
-use std::path::Path;
+use std::{env, fs, path::Path};
 use tauri::{AppHandle, Manager};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct StageData {
-    stage_id: u32,
-    name: String,
-    deftime: u32,
-    length: u32,
-    surface_id: u32,
-    short_country: String,
-    author: String,
-    tarmac: u32,
-    gravel: u32,
-    snow: u32,
-    new_update: u32,
-    author_web: String,
-    author_note: String,
-    fattrib: String,
+    stage_id: Option<String>,      // Changed to Option<String>
+    name: Option<String>,          // Changed to Option<String>
+    deftime: Option<String>,       // Changed to Option<String>
+    length: Option<String>,        // Changed to Option<String>
+    surface_id: Option<String>,    // Changed to Option<String>
+    short_country: Option<String>, // Changed to Option<String>
+    author: Option<String>,        // Changed to Option<String>
+    tarmac: Option<String>,        // Changed to Option<String>
+    gravel: Option<String>,        // Changed to Option<String>
+    snow: Option<String>,          // Changed to Option<String>
+    new_update: Option<String>,    // Changed to Option<String>
+    author_web: Option<String>,    // Changed to Option<String>
+    author_note: Option<String>,   // Changed to Option<String>
+    fattrib: Option<String>,       // Changed to Option<String>
 }
 
 #[tauri::command]
 pub fn get_stages_data(app_handle: AppHandle) -> Result<String, String> {
     dotenv::dotenv().ok();
 
+    // Path to the settings.json file
     let store_path = app_handle
         .path()
         .app_data_dir()
         .unwrap()
         .join("settings.json");
 
+    // Read settings.json file
     let settings_json = fs::read_to_string(store_path)
         .map_err(|e| format!("Failed to read settings.json: {}", e))?;
 
+    // Parse the settings.json content
     let settings_dir: serde_json::Value = serde_json::from_str(&settings_json)
         .map_err(|e| format!("Failed to parse settings.json: {}", e))?;
 
+    // Get the directory for RBR data from the settings
     let dir_path = settings_dir
         .get("rbr_directory")
         .and_then(|v| v.as_str())
         .unwrap_or_default();
 
-    let settings_file_name =
-        env::var("FILE_STAGES_DATA").map_err(|_| "Missing `settings` in .env file".to_string())?;
+    // Get the file name of the stage data JSON file from the environment
+    let stages_file_name = env::var("FILE_STAGES_DATA")
+        .map_err(|_| "Missing `FILE_STAGES_DATA` in .env file".to_string())?;
 
-    let settings_ini_path = Path::new(dir_path).join(settings_file_name);
+    let stages_json_path = Path::new(dir_path).join(stages_file_name);
 
-    let conf = Ini::load_from_file(settings_ini_path)
-        .map_err(|_| "Failed to load the settings.ini file".to_string())?;
-    let mut stages: Vec<StageData> = Vec::new();
+    // Read the stages JSON file
+    let stages_json = fs::read_to_string(&stages_json_path)
+        .map_err(|e| format!("Failed to read stages data JSON file: {}", e))?;
 
-    for (section_name, properties) in &conf {
-        if section_name.is_none() || properties.is_empty() {
-            continue;
-        }
+    // Deserialize the JSON into a vector of StageData structs
+    let stages: Vec<StageData> = serde_json::from_str(&stages_json)
+        .map_err(|e| format!("Failed to parse stages data JSON: {}", e))?;
 
-        let stage_id = section_name
-            .map(|s| {
-                s.split('_')
-                    .nth(1)
-                    .unwrap_or("0")
-                    .parse::<u32>()
-                    .unwrap_or(0)
-            })
-            .unwrap_or(0);
-
-        let stage = StageData {
-            stage_id,
-            name: properties.get("name").unwrap_or("N/A").to_string(),
-            deftime: properties
-                .get("deftime")
-                .unwrap_or("0")
-                .parse()
-                .unwrap_or(0),
-            length: properties.get("length").unwrap_or("0").parse().unwrap_or(0),
-            surface_id: properties
-                .get("surface_id")
-                .unwrap_or("0")
-                .parse()
-                .unwrap_or(0),
-            short_country: properties.get("short_country").unwrap_or("N/A").to_string(),
-            author: properties.get("author").unwrap_or("N/A").to_string(),
-            tarmac: properties.get("tarmac").unwrap_or("0").parse().unwrap_or(0),
-            gravel: properties.get("gravel").unwrap_or("0").parse().unwrap_or(0),
-            snow: properties.get("snow").unwrap_or("0").parse().unwrap_or(0),
-            new_update: properties
-                .get("new_update")
-                .unwrap_or("0")
-                .parse()
-                .unwrap_or(0),
-            author_web: properties.get("author_web").unwrap_or("N/A").to_string(),
-            author_note: properties.get("author_note").unwrap_or("N/A").to_string(),
-            fattrib: properties.get("fattrib").unwrap_or("N/A").to_string(),
-        };
-
-        stages.push(stage);
-    }
+    // Serialize the stages vector to a JSON string
     serde_json::to_string(&stages).map_err(|e| format!("Serialization failed: {}", e))
 }
