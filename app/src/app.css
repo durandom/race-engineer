@@ -1,3 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
+@layer utilities {
+	.center-flex {
+		@apply flex items-center justify-center;
+	}
+}
+
+.body {
+	font-family: 'Urbanist', sans-serif;
+}
